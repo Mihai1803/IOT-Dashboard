@@ -29,15 +29,18 @@ import HumidityDisplayCard from "./cards/HumidityDisplayCard";
 import LightIntensityDisplayCard from "./cards/LightIntensityDisplayCard";
 import GasVoltageDisplayCard from "./cards/GasVoltageDisplayCard";
 
+import { Link } from "react-router-dom";
+
 const drawerWidth = 240;
+
 
 export default function Navigation() {
   const menuItems = [
-    { text: "Home", icon: <HomeIcon /> },
-    { text: "Temperature Report", icon: <ThermostatIcon /> },
-    { text: "Humidity Report", icon: <WaterDropIcon /> },
-    { text: "Light Intensity Report", icon: <LightModeIcon /> },
-    { text: "Gas Voltage Report", icon: <VoltageIcon /> },
+    { text: "Home", icon: <HomeIcon />, path: "/" },
+    { text: "Temperature Report", icon: <ThermostatIcon />, path: "/temperature" },
+    { text: "Humidity Report", icon: <WaterDropIcon />, path: "/humidity" },
+    { text: "Light Intensity Report", icon: <LightModeIcon />, path: "/light" },
+    { text: "Gas Voltage Report", icon: <VoltageIcon />, path: "/gas" },
   ];
 
   const additionalItems = [
@@ -73,7 +76,7 @@ export default function Navigation() {
           <List>
             {menuItems.map((item, index) => (
               <ListItem key={item.text} disablePadding>
-                <ListItemButton>
+                <ListItemButton component={Link} to={item.path}>
                   <ListItemIcon>{item.icon}</ListItemIcon>
                   <ListItemText
                     primary={item.text}

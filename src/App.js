@@ -1,21 +1,22 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from "./pages/HomePage";
+import TemperatureReportPage from './pages/TemperatureReportPage';
+import HumidityReportPage from './pages/HumidityReportPage';
+import LightIntensityReportPage from './pages/LightIntensityReportPage';
+import GasVoltageReportPage from './pages/GasVoltageReportPage';
 
-import TemperatureDisplayCard from "./components/cards/TemperatureDisplayCard";
-import HumidityDisplayCard from "./components/cards/HumidityDisplayCard";
-import LightIntensityDisplayCard from "./components/cards/LightIntensityDisplayCard";
-import GasVoltageDisplayCard from "./components/cards/GasVoltageDisplayCard";
 
-import { Grid2 } from "@mui/material";
-import { Container } from "@mui/material";
-import { Box } from "@mui/material";
-
-import Navigation from "./components/Navigation";
 function App() {
   return (
-    // <Container>
-      
-
-    // </Container>
-    <Navigation/>
+    <Router>
+      <Routes>
+        <Route path='/' element={<HomePage />} />
+        <Route path='/temperature' element={<TemperatureReportPage />} />
+        <Route path='/humidity' element={<HumidityReportPage />} />
+        <Route path='/gas' element={<GasVoltageReportPage />} />
+        <Route path='/light' element={<LightIntensityReportPage />} />
+      </Routes>
+    </Router>
   );
 }
 
