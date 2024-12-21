@@ -6,17 +6,18 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-import sun from '../assets/sun.jpg'
 import { Switch } from '@mui/material';
 
 import { Link } from "react-router-dom";
+
 
 export default function DisplayCard({item}) {
 
   return (      
     <Card sx={{ width: 325}}>
       <CardMedia
-        sx={{ height: 110 }}
+        component="img"
+        sx={{ height: 200 }}
         image={item.image}
         title={item.name}
       />

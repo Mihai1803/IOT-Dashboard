@@ -3,14 +3,17 @@ import { Grid2 } from "@mui/material";
 import DisplayCard from "./DisplayCard";
 
 import sun from '../assets/sun.jpg'
+import temperature from '../assets/temperature.jpg'
+import gas from '../assets/gas.jpg'
+import humidity from '../assets/humidity.png'
 
 export default function DisplayCardGrid() {
 
   const displayItems = [
-    { name: "Temperature", value: "12", path: "/temperature", image:"../assets/sun.jpg"},
-    { name: "Humidity", value: "12", path: "/humidity", image:"../assets/sun.jpg"},
-    { name: "Light Intensity", value: "12", path: "/light", image:"../assets/sun.jpg" },
-    { name: "Gas Voltage", value: "12", path: "/gas", image:"../assets/sun.jpg" }
+    { name: "Temperature", value: "12", path: "/temperature", image:temperature},
+    { name: "Humidity", value: "12", path: "/humidity", image:humidity},
+    { name: "Light Intensity", value: "12", path: "/light", image:sun},
+    { name: "Gas Voltage", value: "12", path: "/gas", image:gas }
   ];
 
 
