@@ -17,7 +17,7 @@ export default function DisplayCard({item}) {
     <Card sx={{ width: 325}}>
       <CardMedia
         sx={{ height: 110 }}
-        image={sun}
+        image={item.image}
         title={item.name}
       />
       <CardContent>
