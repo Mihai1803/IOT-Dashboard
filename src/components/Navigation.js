@@ -31,6 +31,9 @@ import GasVoltageDisplayCard from "./cards/GasVoltageDisplayCard";
 
 import { Link } from "react-router-dom";
 
+import DisplayCard from "./DisplayCard";
+import DisplayCardGrid from "./DisplayCardGrind";
+
 const drawerWidth = 240;
 
 
@@ -113,20 +116,7 @@ export default function Navigation() {
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
         <Box className="p-12 mt-12">
-          <Grid2 container spacing={4} columns={32}>
-            <Grid2 size={8} className="flex justify-center">
-              <TemperatureDisplayCard />
-            </Grid2>
-            <Grid2 size={8} className="flex justify-center">
-              <HumidityDisplayCard />
-            </Grid2>
-            <Grid2 size={8} className="flex justify-center">
-              <LightIntensityDisplayCard />
-            </Grid2>
-            <Grid2 size={8} className="flex justify-center">
-              <GasVoltageDisplayCard />
-            </Grid2>
-          </Grid2>
+          <DisplayCardGrid />
         </Box>
       </Box>
     </Box>
