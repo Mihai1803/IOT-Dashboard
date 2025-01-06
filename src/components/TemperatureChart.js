@@ -10,39 +10,63 @@ import {
   LabelList,
 } from "recharts";
 
+import { useState, useEffect } from "react";
+
 
 export default function TemperatureChart() {
 
-  const data = [
-    {
-      Day: "Monday",
-      Temperature: 5.21
-    },
-    {
-      Day: "Tuesday",
-      Temperature: 10.45
-    },
-    {
-      Day: "Wednesday",
-      Temperature: 15.0
-    },
-    {
-      Day: "Thursday",
-      Temperature: 20.59
-    },
-    {
-      Day: "Friday",
-      Temperature: 25.99
-    },
-    {
-      Day: "Saturday",
-      Temperature: 5.10
-    },
-    {
-      Day: "Sunday",
-      Temperature: 3.2
-    },
-  ]
+  const [data, setData] = useState(() => {
+    const savedData = localStorage.getItem("temperatureData");
+    return savedData
+      ? JSON.parse(savedData)
+      : [
+          { Day: "Monday", Temperature: null },
+          { Day: "Tuesday", Temperature: null },
+          { Day: "Wednesday", Temperature: null },
+          { Day: "Thursday", Temperature: null },
+          { Day: "Friday", Temperature: null },
+          { Day: "Saturday", Temperature: null },
+          { Day: "Sunday", Temperature: null },
+        ];
+  });
+
+  const getCurrentDay = () => {
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const today = new Date().getDay();
+    return days[today];
+  };
+
+  const updateTemperature = (temperature) => {
+    const currentDay = getCurrentDay();
+    setData((prevData) => {
+      const updatedData = prevData.map((item) =>
+        item.Day === currentDay ? { ...item, Temperature: item.Temperature ?? temperature } : item
+      );
+      
+      localStorage.setItem("temperatureData", JSON.stringify(updatedData));
+      return updatedData;
+    });
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetch("http://localhost:8081/api/iot/data?filter=temperature", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-KEY": process.env.REACT_APP_API_KEY
+        }
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("New temperature:", data.temperature);
+          updateTemperature(data.temperature);
+        })
+        .catch((error) => console.error("Error fetching temperature:", error));
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
 
 
   return(

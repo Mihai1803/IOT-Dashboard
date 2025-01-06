@@ -10,39 +10,65 @@ import {
   LabelList,
 } from "recharts";
 
+import { useEffect, useState } from "react";
+
 
 export default function GasVoltageChart() {
+  const [data, setData] = useState(() => {
+    const savedData = localStorage.getItem("gasData");
+    return savedData
+      ? JSON.parse(savedData)
+      : [
+          { Day: "Monday", GasVoltage: null },
+          { Day: "Tuesday", GasVoltage: null },
+          { Day: "Wednesday", GasVoltage: null },
+          { Day: "Thursday", GasVoltage: null },
+          { Day: "Friday", GasVoltage: null },
+          { Day: "Saturday", GasVoltage: null },
+          { Day: "Sunday", GasVoltage: null },
+        ];
+  });
 
-  const data = [
-    {
-      Day: "Monday",
-      GasVoltage: 5.21
-    },
-    {
-      Day: "Tuesday",
-      GasVoltage: 10.45
-    },
-    {
-      Day: "Wednesday",
-      GasVoltage: 15.0
-    },
-    {
-      Day: "Thursday",
-      GasVoltage: 20.59
-    },
-    {
-      Day: "Friday",
-      GasVoltage: 25.99
-    },
-    {
-      Day: "Saturday",
-      GasVoltage: 5.10
-    },
-    {
-      Day: "Sunday",
-      GasVoltage: 3.2
-    },
-  ]
+
+  const getCurrentDay = () => {
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const today = new Date().getDay();
+    return days[today];
+  };
+
+  const updateGasVoltage = (gasVoltage) => {
+    const currentDay = getCurrentDay();
+    setData((prevData) => {
+      const updatedData = prevData.map((item) =>
+        item.Day === currentDay ? { ...item, GasVoltage: item.GasVoltage ?? gasVoltage } : item
+      );
+      
+      localStorage.setItem("gasData", JSON.stringify(updatedData));
+      return updatedData;
+    });
+  };
+
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetch("http://localhost:8081/api/iot/data?filter=gasVoltage", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-KEY": process.env.REACT_APP_API_KEY
+        }
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("New gas voltage:", data.gasVoltage);
+          updateGasVoltage(data.gasVoltage);
+        })
+        .catch((error) => console.error("Error fetching gas voltage:", error));
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
+
 
 
   return(

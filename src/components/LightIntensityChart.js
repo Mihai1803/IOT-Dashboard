@@ -10,39 +10,62 @@ import {
   LabelList,
 } from "recharts";
 
+import { useEffect, useState } from "react";
+
 
 export default function LightIntensityChart() {
+  const [data, setData] = useState(() => {
+    const savedData = localStorage.getItem("lightData");
+    return savedData
+      ? JSON.parse(savedData)
+      : [
+          { Day: "Monday", LightIntensity: null },
+          { Day: "Tuesday", LightIntensity: null },
+          { Day: "Wednesday", LightIntensity: null },
+          { Day: "Thursday", LightIntensity: null },
+          { Day: "Friday", LightIntensity: null },
+          { Day: "Saturday", LightIntensity: null },
+          { Day: "Sunday", LightIntensity: null },
+        ];
+  });
 
-  const data = [
-    {
-      Day: "Monday",
-      LightIntensity: 5.21
-    },
-    {
-      Day: "Tuesday",
-      LightIntensity: 10.45
-    },
-    {
-      Day: "Wednesday",
-      LightIntensity: 15.0
-    },
-    {
-      Day: "Thursday",
-      LightIntensity: 20.59
-    },
-    {
-      Day: "Friday",
-      LightIntensity: 25.99
-    },
-    {
-      Day: "Saturday",
-      LightIntensity: 5.10
-    },
-    {
-      Day: "Sunday",
-      LightIntensity: 3.2
-    },
-  ]
+  const getCurrentDay = () => {
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const today = new Date().getDay();
+    return days[today];
+  };
+
+  const updateLightIntensity = (lightIntensity) => {
+    const currentDay = getCurrentDay();
+    setData((prevData) => {
+      const updatedData = prevData.map((item) =>
+        item.Day === currentDay ? { ...item, LightIntensity: item.LightIntensity ?? lightIntensity } : item
+      );
+      
+      localStorage.setItem("lightData", JSON.stringify(updatedData));
+      return updatedData;
+    });
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetch("http://localhost:8081/api/iot/data?filter=lightIntensity", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-KEY": process.env.REACT_APP_API_KEY
+        }
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("New light intensity:", data.lightIntensity);
+          updateLightIntensity(data.lightIntensity);
+        })
+        .catch((error) => console.error("Error fetching light intensity:", error));
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
 
 
   return(

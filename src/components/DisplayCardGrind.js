@@ -7,14 +7,39 @@ import temperature from '../assets/temperature.jpg'
 import gas from '../assets/gas.jpg'
 import humidity from '../assets/humidity.png'
 
+import { useEffect, useState } from "react"
+
 export default function DisplayCardGrid() {
 
-  const displayItems = [
-    { name: "Temperature", value: "12", path: "/temperature", image:temperature},
-    { name: "Humidity", value: "12", path: "/humidity", image:humidity},
-    { name: "Light Intensity", value: "12", path: "/light", image:sun},
-    { name: "Gas Voltage", value: "12", path: "/gas", image:gas }
-  ];
+
+  const [displayItems, setDisplayItems] = useState([
+    { name: "Temperature", value: "--", path: "/temperature", image: temperature },
+    { name: "Humidity", value: "--", path: "/humidity", image: humidity },
+    { name: "Light Intensity", value: "--", path: "/light", image: sun },
+    { name: "Gas Voltage", value: "--", path: "/gas", image: gas }
+  ]);
+
+  useEffect(() => {
+    fetch("http://localhost:8081/api/iot/data",{
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": process.env.REACT_APP_API_KEY
+      }
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const updatedItems = [
+          { name: "Temperature", value: data.temperature, path: "/temperature", image: temperature },
+          { name: "Humidity", value: data.humidity, path: "/humidity", image: humidity },
+          { name: "Light Intensity", value: data.lightIntensity, path: "/light", image: sun },
+          { name: "Gas Voltage", value: data.gasVoltage, path: "/gas", image: gas }
+        ];
+        setDisplayItems(updatedItems);
+      })
+      .catch((error) => console.error("Error fetching sensor data:", error));
+  }, []);
+
 
 
     return (
