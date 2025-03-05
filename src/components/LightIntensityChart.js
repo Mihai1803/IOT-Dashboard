@@ -19,13 +19,13 @@ export default function LightIntensityChart() {
     return savedData
       ? JSON.parse(savedData)
       : [
-          { Day: "Monday", LightIntensity: null },
-          { Day: "Tuesday", LightIntensity: null },
-          { Day: "Wednesday", LightIntensity: null },
-          { Day: "Thursday", LightIntensity: null },
-          { Day: "Friday", LightIntensity: null },
-          { Day: "Saturday", LightIntensity: null },
-          { Day: "Sunday", LightIntensity: null },
+          { Day: "Monday", LightIntensity: 0 },
+          { Day: "Tuesday", LightIntensity: 0 },
+          { Day: "Wednesday", LightIntensity: 0 },
+          { Day: "Thursday", LightIntensity: 0 },
+          { Day: "Friday", LightIntensity: 0 },
+          { Day: "Saturday", LightIntensity: 0 },
+          { Day: "Sunday", LightIntensity: 0 },
         ];
   });
 
@@ -34,6 +34,12 @@ export default function LightIntensityChart() {
     const today = new Date().getDay();
     return days[today];
   };
+
+ 
+  
+
+  
+
 
   const updateLightIntensity = (lightIntensity) => {
     const currentDay = getCurrentDay();

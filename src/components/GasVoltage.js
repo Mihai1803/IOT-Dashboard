@@ -19,13 +19,13 @@ export default function GasVoltageChart() {
     return savedData
       ? JSON.parse(savedData)
       : [
-          { Day: "Monday", GasVoltage: null },
-          { Day: "Tuesday", GasVoltage: null },
-          { Day: "Wednesday", GasVoltage: null },
-          { Day: "Thursday", GasVoltage: null },
-          { Day: "Friday", GasVoltage: null },
-          { Day: "Saturday", GasVoltage: null },
-          { Day: "Sunday", GasVoltage: null },
+          { Day: "Monday", GasVoltage: 0 },
+          { Day: "Tuesday", GasVoltage: 0 },
+          { Day: "Wednesday", GasVoltage: 0 },
+          { Day: "Thursday", GasVoltage: 0 },
+          { Day: "Friday", GasVoltage: 0 },
+          { Day: "Saturday", GasVoltage: 0 },
+          { Day: "Sunday", GasVoltage: 0 },
         ];
   });
 
@@ -35,6 +35,8 @@ export default function GasVoltageChart() {
     const today = new Date().getDay();
     return days[today];
   };
+
+ 
 
   const updateGasVoltage = (gasVoltage) => {
     const currentDay = getCurrentDay();

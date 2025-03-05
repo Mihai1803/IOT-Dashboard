@@ -20,13 +20,13 @@ export default function HumidityChart() {
     return savedData
       ? JSON.parse(savedData)
       : [
-          { Day: "Monday", Humidity: null },
-          { Day: "Tuesday", Humidity: null },
-          { Day: "Wednesday", Humidity: null },
-          { Day: "Thursday", Humidity: null },
-          { Day: "Friday", Humidity: null },
-          { Day: "Saturday", Humidity: null },
-          { Day: "Sunday", Humidity: null },
+          { Day: "Monday", Humidity: 0 },
+          { Day: "Tuesday", Humidity: 0 },
+          { Day: "Wednesday", Humidity: 0 },
+          { Day: "Thursday", Humidity: 0 },
+          { Day: "Friday", Humidity: 0 },
+          { Day: "Saturday", Humidity: 0 },
+          { Day: "Sunday", Humidity: 0 },
         ];
   });
 
@@ -36,6 +36,8 @@ export default function HumidityChart() {
       const today = new Date().getDay();
       return days[today];
     };
+
+
   
     const updateHumidity = (humidity) => {
       const currentDay = getCurrentDay();

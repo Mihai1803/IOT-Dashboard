@@ -20,14 +20,14 @@ export default function TemperatureChart() {
     return savedData
       ? JSON.parse(savedData)
       : [
-          { Day: "Monday", Temperature: null },
-          { Day: "Tuesday", Temperature: null },
-          { Day: "Wednesday", Temperature: null },
-          { Day: "Thursday", Temperature: null },
-          { Day: "Friday", Temperature: null },
-          { Day: "Saturday", Temperature: null },
-          { Day: "Sunday", Temperature: null },
-        ];
+          { Day: "Monday", Temperature: 0 },
+          { Day: "Tuesday", Temperature: 0 },
+          { Day: "Wednesday", Temperature: 0 },
+          { Day: "Thursday", Temperature: 0 },
+          { Day: "Friday", Temperature: 0 },
+          { Day: "Saturday", Temperature: 0 },
+          { Day: "Sunday", Temperature: 0 },
+        ];  
   });
 
   const getCurrentDay = () => {
@@ -36,11 +36,19 @@ export default function TemperatureChart() {
     return days[today];
   };
 
+  const removeExtrasTemperature = (temperature) => {
+    if (typeof temperature === "string") {
+      // Remove non-numeric characters and convert to a number
+      return parseFloat(temperature.replace(/[^\d.-]/g, ""));
+    }
+    return temperature;
+  };
+
   const updateTemperature = (temperature) => {
     const currentDay = getCurrentDay();
     setData((prevData) => {
       const updatedData = prevData.map((item) =>
-        item.Day === currentDay ? { ...item, Temperature: item.Temperature ?? temperature } : item
+        item.Day === currentDay ? { ...item, Temperature: item.Temperature ?? removeExtrasTemperature(temperature) } : item
       );
       
       localStorage.setItem("temperatureData", JSON.stringify(updatedData));
